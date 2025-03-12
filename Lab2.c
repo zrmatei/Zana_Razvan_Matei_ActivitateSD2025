@@ -87,6 +87,12 @@ void dezalocare(struct Masina** vector, int* nrElemente) {
     }
 }
 
+void interschimbMasini(struct Masina* vect1, struct Masina* vect2){
+    struct Masina temp = *vect1;
+    *vect1 = *vect2;
+    *vect2 = temp;
+}
+
 int main() {
     int nrElem = 3;
     struct Masina* vector = (struct Masina*)malloc(nrElem * sizeof(struct Masina));;
@@ -110,6 +116,11 @@ int main() {
 
     struct Masina m1 = getPrimaMasinaDupaMarca(vector, nrElem, "Audi");
     afisare(m1);
+
+    interschimbMasini(&vector[0], &vector[1]);
+    printf("\n********INTERSCHIMBARE********");
+    afisare(vector[0]);
+    afisare(vector[1]);
 
     dezalocare(&vector, &nrElem);
     return 0;
