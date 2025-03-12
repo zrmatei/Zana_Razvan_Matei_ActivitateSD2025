@@ -93,6 +93,23 @@ void interschimbMasini(struct Masina* vect1, struct Masina* vect2){
     *vect2 = temp;
 }
 
+struct Masina* stergeMasina(struct Masina* vect, char* cheieMarca,int* nrElem){
+    if(vect != NULL){
+        for(int i=0; i < *nrElem; i++){
+            if(strcmp(vect[i].marca, cheieMarca) == 0){
+                free(vect[i].marca);
+                for(int j=i; j < *nrElem-1; j++){
+                    vect[j] = vect[j+1];
+                }
+                break;
+            }
+        }
+        (*nrElem)--;
+        vect = (struct Masina*)realloc(vect, (*nrElem) * sizeof(struct Masina));
+    }
+    return vect;
+}
+
 int main() {
     int nrElem = 3;
     struct Masina* vector = (struct Masina*)malloc(nrElem * sizeof(struct Masina));;
@@ -121,6 +138,10 @@ int main() {
     printf("\n********INTERSCHIMBARE********");
     afisare(vector[0]);
     afisare(vector[1]);
+
+    printf("\n********STERGERE********");
+    stergeMasina(&vector[0], "Audi", &nrElem);
+    afisareVector(vector, nrElem);
 
     dezalocare(&vector, &nrElem);
     return 0;
