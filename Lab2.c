@@ -110,13 +110,22 @@ struct Masina* stergeMasina(struct Masina* vect, char* cheieMarca,int* nrElem){
     return vect;
 }
 
+void afisareIdPar(struct Masina* vect, int nrElem){
+    for(int i = 0; i < nrElem; i++){
+        if(vect[i].id % 2 == 0){
+            afisare(vect[i]);
+        }
+    }
+}
+
 int main() {
-    int nrElem = 3;
+    int nrElem = 4;
     struct Masina* vector = (struct Masina*)malloc(nrElem * sizeof(struct Masina));;
 
     vector[0] = initializare(1, 4, "Audi", 1.6, '6');
     vector[1] = initializare(2, 4, "BMW", 2.0, '6');
     vector[2] = initializare(3, 4, "Mercedes", 2.5, '6');
+    vector[3] = initializare(4, 5, "Ford", 3.0, '6');
     printf("\nMasinile initiale:");
     afisareVector(vector, nrElem);
 
@@ -142,6 +151,9 @@ int main() {
     printf("\n********STERGERE********");
     stergeMasina(&vector[0], "Audi", &nrElem);
     afisareVector(vector, nrElem);
+
+    printf("\n********ID-URI PARE********");
+    afisareIdPar(vector, nrElem);
 
     dezalocare(&vector, &nrElem);
     return 0;
