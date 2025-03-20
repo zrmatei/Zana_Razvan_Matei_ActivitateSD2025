@@ -1,1 +1,4 @@
 1,4,30000,Tesla,Gigel,3
+2,4,45000,Ford,Dorel,4
+3,2,50000,BMW,Floricel,6
+4,4,130000,Mercedes Benz,Razvan,6
