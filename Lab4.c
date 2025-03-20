@@ -145,6 +145,20 @@ void stergeMasiniDinSeria(/*lista masini*/ Nod** cap, char serieCautata) {
 	}
 }
 
+char* afisListaMasiniProprietar(Nod* cap, char* sofer){
+	char* listaMasini = (char*)malloc(sizeof(char) * strlen(cap->info.model + 1));
+	Nod* temp = cap;
+	while(temp != NULL){
+		if(strcmp(temp->info.numeSofer, sofer) == 0){
+			listaMasini = realloc(listaMasini, sizeof(char) * strlen(temp->info.model));
+			strcat(listaMasini, temp->info.model);
+			strcat(listaMasini, " ");
+		}
+		temp = temp->urm;
+	}
+	return listaMasini;
+}
+
 float calculeazaPretulMasinilorUnuiSofer(Nod* lista, const char* numeSofer) {
 	float sum=0;
 	while(lista){
@@ -198,6 +212,11 @@ int main() {
 	stergeMasiniDinSeria(&cap, '6');
 	printf("\n\nAfisare dupa stergere:\n");
 	afisareListaMasini(cap);
+
+	printf("\n*********MASINI PROPRIETAR*********\n");
+	char* masiniP = afisListaMasiniProprietar(cap, "Gigel");
+	printf("%s", masiniP);
+
 	dezalocareListaMasini(&cap);
 
 	return 0;
