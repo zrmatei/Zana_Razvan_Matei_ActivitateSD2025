@@ -14,20 +14,18 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
+//creare structura pentru un nod dintr-o lista dublu inlantuita
 typedef struct nodld{
     Masina info;
     struct nodld* urm;
     struct nodld* prec;
 }nodld;
 
+//creare structura pentru Lista Dubla 
 typedef struct Lista{
     nodld* prim;
     nodld* ultim;
 }Lista;
-
-//creare structura pentru un nod dintr-o lista dublu inlantuita
-
-//creare structura pentru Lista Dubla 
 
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
@@ -144,13 +142,41 @@ float calculeazaPretMediu(Lista list) {
     return suma/cnt;
 }
 
-void stergeMasinaDupaID(/*lista masini*/ int id) {
-	//sterge masina cu id-ul primit.
-	//tratati situatia ca masina se afla si pe prima pozitie, si pe ultima pozitie
+void stergeMasinaDupaID(Lista* list, int id) {
+    nodld* temp = list->prim;
+    while(temp){
+        if(temp->info.id == id){
+            //caz 1: sterg capul
+            if(temp == list->prim){
+                list->prim = temp->urm;
+                list->prim->prec = NULL;
+            //caz 2: sterg coada
+            }else if(temp == list->ultim){
+                list->ultim = temp->prec;
+                list->ultim->urm = NULL;
+            //caz 3: sterg alt nod
+            }else{
+                temp->prec->urm = temp->urm;
+                temp->urm->prec = temp->prec;
+            }
+            free(temp->info.model);
+            free(temp->info.numeSofer);
+            free(temp);
+        }
+        temp = temp->urm;
+    }
 }
 
 char* getNumeSoferMasinaScumpa(Lista list) {
-	
+    nodld* temp = list.prim;
+    nodld* max = temp;
+    while(temp->urm != NULL){
+        if(temp->info.pret > max->info.pret){
+            max = temp;
+        }
+        temp = temp->urm;
+    }
+    return max->info.numeSofer;
 }
 
 int main() {
@@ -160,6 +186,15 @@ int main() {
 
     float pretMediu = calculeazaPretMediu(list);
     printf("%0.2f Medie", pretMediu);
+
+    char* soferMasinaScumpa = getNumeSoferMasinaScumpa(list);
+    printf("\nNume sofer masina scumpa: %s\n", soferMasinaScumpa);
+
+    printf("\n***VERIFICARE CAZURI***\n");
+    //stergeMasinaDupaID(&list, 1);
+    //stergeMasinaDupaID(&list, 3);
+    stergeMasinaDupaID(&list, 6);
+    afisareListaMasiniSf(list);
 
     dezalocareLDMasini(&list);
 	return 0;
